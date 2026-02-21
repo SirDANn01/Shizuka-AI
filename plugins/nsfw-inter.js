@@ -84,9 +84,23 @@ export default {
   category: 'nsfw',
 
   run: async (client, m, args, command) => {
+    const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings[botJid] || {}
+
+    // 1. Verificación Global: ¿Está el interruptor en "Solo Owners"?
+    if (settings.nsfwOnlyOwner) {
+      const isOwner = [botJid, ...global.owner.map(num => num + '@s.whatsapp.net')].includes(m.sender)
+      if (!isOwner) {
+        return m.reply('🗞️ Actualmente estos comandos están limitados solo para el *Owner*.')
+      }
+    }
+
+    // 2. Verificación del Grupo (Tu código original)
     if (!global.db.data.chats[m.chat]?.nsfw)
       return m.reply('✐ Los comandos de *NSFW* están desáctivados en este Grupo.')
 
+    const used = (command || '').toLowerCase()
+    // ... aquí sigue el resto de tu código original: const currentCommand = commandAliases[used]...
     const used = (command || '').toLowerCase()
     const currentCommand = commandAliases[used] || used
     if (!captions[currentCommand]) return
