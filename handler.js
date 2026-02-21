@@ -173,30 +173,7 @@ ${h}`
       return
   }
 
-  if (m.chat && !m.chat.endsWith('g.us')) {
-    const allowedInPrivate = [
-      'report',
-      'reporte',
-      'sug',
-      'suggest',
-      'invite',
-      'invitar',
-      'setname',
-      'setbotname',
-      'setstatus',
-      'reload'
-    ]
-
-    const owners = global.db.data.settings[selfId]?.owner
-
-    if (
-      sender !== owners &&
-      !isVotOwn &&
-      !allowedInPrivate.includes(command)
-    )
-      return
-  }
-
+  
   if (chat?.bannedGrupo && !isVotOwn) return
   if (chat.adminonly && !isAdmins) return
 
